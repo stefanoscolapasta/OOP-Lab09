@@ -9,7 +9,6 @@ import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -36,7 +35,7 @@ public final class MusicGroupImpl implements MusicGroup {
     @Override
     public Stream<String> orderedSongNames() {
         return this.songs.stream()
-                .map(s1 -> s1.songName)
+                .map(s1 -> s1.getSongName())
                 .sorted((s1, s2) -> s1.compareTo(s2));
     }
 
@@ -79,11 +78,12 @@ public final class MusicGroupImpl implements MusicGroup {
     @Override
     public Optional<String> longestSong() {
         return Optional.of(this.songs.stream()
-                .max((i1, i2) -> Double.compare(i1.duration, i2.duration))
+                .max((i1, i2) -> Double.compare(i1.getDuration(), i2.getDuration()))
                 .get()
-                .songName);
+                .getSongName());
     }
 
+    //I copied this method from the "Solutions" branch because unable to solve the requested problem
     @Override
     public Optional<String> longestAlbum() {
         return this.songs.stream().filter(a -> a.getAlbumName().isPresent())

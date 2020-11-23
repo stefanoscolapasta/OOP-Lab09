@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.Toolkit;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -33,9 +34,18 @@ import javax.swing.JTextArea;
 public final class LambdaFilter extends JFrame {
 
     private static final long serialVersionUID = 1760990730218643730L;
+    private static final int NEW_LINE_IN_ASCII = (int) '\n';
+    private static final int OFFSET = 1;
 
     private enum Command {
-        IDENTITY("No modifications", Function.identity());
+        IDENTITY("No modifications", Function.identity()),
+        TO_UPPERCASE("To uppercase", (t1) -> t1.toUpperCase()),
+        TO_LOWERCASE("To lowercase", (t1) -> t1.toLowerCase()),
+        NUMBER_OF_CHARS("Count chars", (t1) -> Long.toString(t1.chars().count())),
+        NUMBER_OF_LINES("Count of lines", (t1) -> Long.toString(t1.chars().filter(i -> Integer.valueOf(i).equals(NEW_LINE_IN_ASCII)).count() + OFFSET));
+        /* 
+         * ORDER_WORDS("Order words in alphabetical order", (t1) -> ...); it's the only thing last to implement
+         */ 
 
         private final String commandName;
         private final Function<String, String> fun;
